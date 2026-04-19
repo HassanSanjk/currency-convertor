@@ -47,7 +47,7 @@
     <p><strong>Rate:</strong> 1 {{ base }} = {{ market_rate }} {{ target }}</p>
     <p><strong>Amount:</strong> {{ market_result }} {{ target }}</p>
 
-    {% if market_ref and !(base == "USD") %}
+    {% if market_ref and base != "USD" %}
     <p><strong>USD → SDG reference:</strong> {{ market_ref }}</p>
     {% endif %}
 
