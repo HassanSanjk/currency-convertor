@@ -1,6 +1,6 @@
 import requests
 from flask import Flask, render_template, request
-
+from datetime import timedelta
 from config import Config
 from services.official_rates import get_official_rate
 from services.market_rates import get_usd_sdg_rate
@@ -67,7 +67,10 @@ def convert():
         rate = official["rate"]
         result = amount * rate
         official_status = official["status"]
-        official_updated = str(official["updated_at"])
+        utc_time = official["updated_at"]
+        myt_time = utc_time + timedelta(hours=8)
+        official_updated = {"utc": utc_time.strftime("%H:%M"),
+                            "myt": myt_time.strftime("%H:%M"),}
 
         # SDG market conversion
         if base == "SDG" or target == "SDG":
@@ -76,7 +79,11 @@ def convert():
 
             market_ref = usd_sdg
             market_status = market["status"]
-            market_updated = str(market["updated_at"])
+            utc_time_m = market["updated_at"]
+            myt_time_m = utc_time_m + timedelta(hours=8)
+
+            market_updated = {"utc": utc_time_m.strftime("%H:%M"),
+                            "myt": myt_time_m.strftime("%H:%M"),}
             show_market_note = True
 
             if base == "USD" and target == "SDG":
